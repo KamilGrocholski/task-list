@@ -16,5 +16,6 @@ const TextField = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) => {
         <input type="text" className={composedClassName} {...rest} ref={ref} />
     )
 })
+TextField.displayName = 'TextField'
 
 export default TextField
