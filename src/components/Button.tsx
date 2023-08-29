@@ -40,7 +40,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
     } = props
 
     const composedClassName = clsx(
-        'rounded-md base-transition',
+        'base-transition',
         sizes[size],
         variants[variant],
         shapes[shape],

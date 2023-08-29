@@ -4,11 +4,12 @@ import { type Task } from '../types'
 import { useOnClickOutside } from '../hooks/useOnClickOutside'
 import TextField from './TextField'
 import { useTasks } from '../hooks/useTasks'
+import Button from './Button'
+import Checkbox from './Checkbox'
 
 import { FaTrash } from 'react-icons/fa'
 import { motion } from 'framer-motion'
 import clsx from 'clsx'
-import Button from './Button'
 
 const TaskItem: React.FC<{ task: Task }> = ({ task }) => {
     const [isEditing, setIsEditing] = useState<boolean>(false)
@@ -74,16 +75,14 @@ const TaskItem: React.FC<{ task: Task }> = ({ task }) => {
             className="flex flex-row items-center gap-1 rounded-md bg-rosePine-overlay px-3 py-0.5"
             role="listitem"
         >
-            <div>
-                <input
-                    type="checkbox"
-                    onChange={handleEditIsCompleted}
+            <div className="flex items-center">
+                <Checkbox
                     checked={isCompleted}
-                    className="base-transition peer mt-1 h-10 w-10 appearance-none rounded-full border-2 border-rosePine-iris bg-rosePine-highlightLow checked:border-0 checked:bg-rosePine-iris hover:bg-rosePine-iris/20 focus:outline-none focus:ring-1 focus:ring-rosePine-iris focus:ring-offset-0"
+                    onChange={handleEditIsCompleted}
                 />
             </div>
             <div
-                className="base-transition flex flex-grow flex-col px-2"
+                className="base-transition flex flex-grow flex-col items-center px-2"
                 onClick={handleClickOnContentContainer}
                 ref={contentContainerRef}
             >
@@ -93,7 +92,6 @@ const TaskItem: React.FC<{ task: Task }> = ({ task }) => {
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         onKeyDown={handleEditInputOnKeyDown}
-                        tabIndex={0}
                     />
                 ) : (
                     <TextField
@@ -105,7 +103,7 @@ const TaskItem: React.FC<{ task: Task }> = ({ task }) => {
                     />
                 )}
             </div>
-            <div className="flex flex-row items-center gap-2">
+            <div className="flex flex-row items-center">
                 <Button
                     variant="void"
                     shape="round"

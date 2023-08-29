@@ -33,7 +33,7 @@ const TaskInput: React.FC = () => {
                     className="rounded-r-none px-3 py-4 md:text-xl"
                 />
                 <Button
-                    className="rounded-l-none rounded-r-xl px-3 py-4 md:text-xl"
+                    className="rounded-l-none px-3 py-4 md:text-xl"
                     type="submit"
                 >
                     Dodaj
