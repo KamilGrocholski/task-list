@@ -7,6 +7,8 @@ import { useTasks } from '../hooks/useTasks'
 
 import { FaTrash } from 'react-icons/fa'
 import { motion } from 'framer-motion'
+import clsx from 'clsx'
+import Button from './Button'
 
 const TaskItem: React.FC<{ task: Task }> = ({ task }) => {
     const [isEditing, setIsEditing] = useState<boolean>(false)
@@ -14,6 +16,7 @@ const TaskItem: React.FC<{ task: Task }> = ({ task }) => {
     const [isCompleted, setIsCompleted] = useState<boolean>(task.isCompleted)
 
     const contentContainerRef = useRef<HTMLDivElement | null>(null)
+    useOnClickOutside(contentContainerRef, handleEditContent)
     const editInputRef = useRef<HTMLInputElement | null>(null)
 
     const { dispatch } = useTasks()
@@ -31,6 +34,7 @@ const TaskItem: React.FC<{ task: Task }> = ({ task }) => {
             })
         }
 
+        editInputRef.current?.blur()
         setIsEditing(false)
     }
 
@@ -53,7 +57,13 @@ const TaskItem: React.FC<{ task: Task }> = ({ task }) => {
         editInputRef.current?.focus()
     }
 
-    useOnClickOutside(contentContainerRef, handleEditContent)
+    function handleEditInputOnKeyDown(
+        e: React.KeyboardEvent<HTMLInputElement>,
+    ) {
+        if (e.key === 'Enter') {
+            handleEditContent()
+        }
+    }
 
     return (
         <motion.li
@@ -69,11 +79,11 @@ const TaskItem: React.FC<{ task: Task }> = ({ task }) => {
                     type="checkbox"
                     onChange={handleEditIsCompleted}
                     checked={isCompleted}
-                    className="peer relative mt-1 h-10 w-10 appearance-none rounded-full border-2 border-rosePine-iris bg-rosePine-highlightLow checked:border-0 checked:bg-rosePine-iris focus:outline-none focus:ring-1 focus:ring-rosePine-iris focus:ring-offset-0"
+                    className="base-transition peer mt-1 h-10 w-10 appearance-none rounded-full border-2 border-rosePine-iris bg-rosePine-highlightLow checked:border-0 checked:bg-rosePine-iris hover:bg-rosePine-iris/20 focus:outline-none focus:ring-1 focus:ring-rosePine-iris focus:ring-offset-0"
                 />
             </div>
             <div
-                className="flex flex-grow flex-col px-2"
+                className="base-transition flex flex-grow flex-col px-2"
                 onClick={handleClickOnContentContainer}
                 ref={contentContainerRef}
             >
@@ -82,23 +92,28 @@ const TaskItem: React.FC<{ task: Task }> = ({ task }) => {
                         ref={editInputRef}
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
+                        onKeyDown={handleEditInputOnKeyDown}
+                        tabIndex={0}
                     />
                 ) : (
                     <TextField
                         value={content}
                         readOnly
-                        className={`${
-                            isCompleted
-                                ? 'text-rosePine-subtle line-through'
-                                : ''
-                        }`}
+                        className={clsx(
+                            isCompleted && 'text-rosePine-subtle line-through',
+                        )}
                     />
                 )}
             </div>
             <div className="flex flex-row items-center gap-2">
-                <button onClick={handleRemove}>
-                    <FaTrash className="text-rosePine-love" />
-                </button>
+                <Button
+                    variant="void"
+                    shape="round"
+                    onClick={handleRemove}
+                    className="base-transition group rounded-full p-1 hover:bg-rosePine-love"
+                >
+                    <FaTrash className="base-transition text-rosePine-love group-hover:text-rosePine-overlay" />
+                </Button>
             </div>
         </motion.li>
     )

@@ -5,33 +5,21 @@ import TaskItem from './TaskItem'
 import TextField from './TextField'
 import { type Filter } from '../types'
 import ShouldRender from './ShouldRender'
+import TaskListFilterPanel from './TaskListFilterPanel'
+import { filterTasks } from '../utils/tasks'
+import { useDebounce } from '../hooks/useDebounce'
 
 import { AnimatePresence } from 'framer-motion'
-import clsx from 'clsx'
 
 const TaskList: React.FC = () => {
     const { tasks } = useTasks()
     const [searchQuery, setSearchQuery] = useState<string>('')
+    const debouncedSearchQuery = useDebounce(searchQuery)
     const [filter, setFilter] = useState<Filter>('all')
 
     const filteredTasks = useMemo(() => {
-        const shouldRunFilter = filter !== 'all'
-        const shouldFilterOutCompleted = filter === 'active'
-
-        if (!shouldRunFilter) {
-            return tasks.filter((task) => task.content.startsWith(searchQuery))
-        }
-
-        if (shouldFilterOutCompleted) {
-            return tasks.filter((task) => {
-                return task.content.startsWith(searchQuery) && !task.isCompleted
-            })
-        }
-
-        return tasks.filter((task) => {
-            return task.content.startsWith(searchQuery) && task.isCompleted
-        })
-    }, [tasks, searchQuery, filter])
+        return filterTasks(tasks, { searchQuery: debouncedSearchQuery, filter })
+    }, [tasks, filter, debouncedSearchQuery])
 
     return (
         <div className="flex flex-col gap-3">
@@ -65,39 +53,3 @@ const TaskList: React.FC = () => {
 }
 
 export default TaskList
-
-const TaskListFilterPanel: React.FC<{
-    filter: Filter
-    setFilter: React.Dispatch<React.SetStateAction<Filter>>
-}> = ({ filter, setFilter }) => {
-    return (
-        <div className="flex flex-row justify-center gap-3 text-center">
-            <button
-                className={clsx(
-                    `${filter !== 'all' && 'text-rosePine-highlightHigh'}`,
-                )}
-                onClick={() => setFilter('all')}
-            >
-                Wszystkie
-            </button>
-            <button
-                className={clsx(
-                    `${
-                        filter !== 'completed' && 'text-rosePine-highlightHigh'
-                    }`,
-                )}
-                onClick={() => setFilter('completed')}
-            >
-                Ukończone
-            </button>
-            <button
-                className={clsx(
-                    `${filter !== 'active' && 'text-rosePine-highlightHigh'}`,
-                )}
-                onClick={() => setFilter('active')}
-            >
-                Aktywne
-            </button>
-        </div>
-    )
-}

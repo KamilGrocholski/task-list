@@ -7,3 +7,9 @@
         @apply bg-rosePine-base text-rosePine-text;
     }
 }
+
+@layer components {
+    .base-transition {
+        @apply transition-all duration-300 ease-in-out;
+    }
+}
