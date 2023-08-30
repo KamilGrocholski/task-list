@@ -72,7 +72,7 @@ const TaskItem: React.FC<{ task: Task }> = ({ task }) => {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 50 }}
             transition={{ duration: 0.2 }}
-            className="flex flex-row items-center gap-1 rounded-md bg-rosePine-overlay px-3 py-0.5"
+            className="flex flex-row items-center gap-1 rounded-md bg-rosePine-overlay px-3 py-1"
             role="listitem"
         >
             <div className="flex items-center">

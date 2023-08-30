@@ -3,7 +3,7 @@ import { forwardRef } from 'react'
 import clsx from 'clsx'
 
 export type TextFieldProps = {
-    size?: keyof typeof sizes
+    sizeField?: keyof typeof sizes
     shape?: keyof typeof shapes
 } & React.InputHTMLAttributes<HTMLInputElement>
 
@@ -18,11 +18,11 @@ const shapes = {
 } as const
 
 const TextField = forwardRef<HTMLInputElement, TextFieldProps>((props, ref) => {
-    const { className, size = 'base', shape = 'round', ...rest } = props
+    const { className, sizeField = 'base', shape = 'round', ...rest } = props
 
     const composedClassName = clsx(
         'w-full bg-rosePine-overlay placeholder:text-rosePine-muted',
-        sizes[size],
+        sizes[sizeField],
         shapes[shape],
         className,
     )
