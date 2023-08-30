@@ -92,6 +92,7 @@ const TaskItem: React.FC<{ task: Task }> = ({ task }) => {
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         onKeyDown={handleEditInputOnKeyDown}
+                        sizeField="sm"
                     />
                 ) : (
                     <TextField
@@ -100,6 +101,7 @@ const TaskItem: React.FC<{ task: Task }> = ({ task }) => {
                         className={clsx(
                             isCompleted && 'text-rosePine-subtle line-through',
                         )}
+                        sizeField="sm"
                     />
                 )}
             </div>
